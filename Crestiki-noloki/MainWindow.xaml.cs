@@ -62,7 +62,7 @@ namespace Crestiki_noloki
                     buttons[i, j].Foreground = Brushes.Black;
                 }
 
-            StatusTB.Text = "Ваш ход (X)";
+            StatusTB.Text = "Ваш ход";
             StatusTB.Foreground = Brushes.Black;
         }
 
@@ -114,7 +114,7 @@ namespace Crestiki_noloki
             }
 
             isPlayerTurn = false;
-            StatusTB.Text = "Ход бота (O)";
+            StatusTB.Text = "Ход бота";
 
             var timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
