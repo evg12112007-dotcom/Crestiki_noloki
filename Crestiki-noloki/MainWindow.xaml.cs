@@ -22,9 +22,15 @@ namespace Crestiki_noloki
     public partial class MainWindow : Window
     {
         private bool isPlayerTurn = true;
+        private int scorePlayer = 0;
+        private int scoreBot = 0;
+        private Brush colorX = Brushes.Black;
+        private Brush colorO = Brushes.Black;
         private char[,] board = new char[3, 3];
         private Button[,] buttons = new Button[3, 3];
         private Random random = new Random();
+        private string simbolX = "X";
+        private string simbolO = "O";
 
         public MainWindow()
         {
@@ -60,6 +66,22 @@ namespace Crestiki_noloki
             StatusTB.Foreground = Brushes.Black;
         }
 
+        private void ColorX_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (ColorXCombo.SelectedItem is ComboBoxItem item)
+            {
+                colorX = new SolidColorBrush((Color)ColorConverter.ConvertFromString(item.Tag.ToString()));
+            }
+        }
+
+        private void ColorO_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (ColorOCombo.SelectedItem is ComboBoxItem item)
+            {
+                colorO = new SolidColorBrush((Color)ColorConverter.ConvertFromString(item.Tag.ToString()));
+            }
+        }
+
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
             if (!isPlayerTurn) return;
@@ -77,6 +99,9 @@ namespace Crestiki_noloki
             {
                 StatusTB.Text = "Вы победили!";
                 StatusTB.Foreground = Brushes.Green;
+                scorePlayer++;
+                ScorePlayerTB.Text = $"Вы: {scorePlayer}";
+                HighlightWinningCells(Brushes.LightGreen);
                 DisableAllButtons();
                 return;
             }
@@ -104,7 +129,11 @@ namespace Crestiki_noloki
         private void MakeMove(int row, int col, char symbol)
         {
             board[row, col] = symbol;
-            buttons[row, col].Content = symbol.ToString();
+            if (symbol == 'X')
+                buttons[row, col].Content = simbolX;
+            else
+                buttons[row, col].Content = simbolO;
+            buttons[row, col].Foreground = (symbol == 'X') ? colorX : colorO;
             buttons[row, col].IsEnabled = false;
         }
 
@@ -125,6 +154,9 @@ namespace Crestiki_noloki
                 {
                     StatusTB.Text = "Противник победил!";
                     StatusTB.Foreground = Brushes.Red;
+                    scoreBot++;
+                    ScoreBotTB.Text = $"Бот: {scoreBot}";
+                    HighlightWinningCells(Brushes.LightCoral);
                     DisableAllButtons();
                     return;
                 }
@@ -138,6 +170,34 @@ namespace Crestiki_noloki
 
                 isPlayerTurn = true;
                 StatusTB.Text = "Ваш ход (X)";
+            }
+        }
+        private void HighlightWinningCells(Brush color)
+        {
+            for (int i = 0; i < 3; i++)
+                if (board[i, 0] != '\0' && board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2])
+                {
+                    buttons[i, 0].Background = buttons[i, 1].Background = buttons[i, 2].Background = color;
+                    return;
+                }
+
+            for (int j = 0; j < 3; j++)
+                if (board[0, j] != '\0' && board[0, j] == board[1, j] && board[1, j] == board[2, j])
+                {
+                    buttons[0, j].Background = buttons[1, j].Background = buttons[2, j].Background = color;
+                    return;
+                }
+
+            if (board[0, 0] != '\0' && board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2])
+            {
+                buttons[0, 0].Background = buttons[1, 1].Background = buttons[2, 2].Background = color;
+                return;
+            }
+
+            if (board[0, 2] != '\0' && board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0])
+            {
+                buttons[0, 2].Background = buttons[1, 1].Background = buttons[2, 0].Background = color;
+                return;
             }
         }
 
@@ -232,6 +292,33 @@ namespace Crestiki_noloki
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                     buttons[i, j].IsEnabled = false;
+        }
+
+        private void SymbolX_Changed(object sender, TextChangedEventArgs e)
+        {
+            string text = SymbolXBox.Text;
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                simbolX = text;
+            }
+            else
+            {
+                simbolX = "X";
+            }
+        }
+        private void SymbolO_Changed(object sender, TextChangedEventArgs e)
+        {
+            string text = SymbolOBox.Text;
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                simbolO = text;
+            }
+            else
+            {
+                simbolO = "O";
+            }
         }
     }
 }

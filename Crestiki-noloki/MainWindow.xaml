@@ -5,19 +5,117 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crestiki_noloki"
         mc:Ignorable="d"
-        Title="Крестики-нолики" Height="600" Width="800">
+        Title="Крестики-нолики" Height="800" Width="850">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="0" Margin="5">
-            <TextBlock x:Name="StatusTB" Text="Ваш ход" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-        </StackPanel>
+
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <TextBlock Text="Счёт:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                <TextBlock x:Name="ScorePlayerTB" Text="Вы: 0" FontSize="14" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="ScoreBotTB" Text="Бот: 0" FontSize="14" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="49,0,-50,0">
+                <TextBlock Text="Настройки:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <Grid Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Цвета:" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                            <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="ColorXCombo" Width="80" SelectionChanged="ColorX_Changed">
+                                <ComboBoxItem Content="Чёрный" Tag="#000000" IsSelected="True"/>
+                                <ComboBoxItem Content="Красный" Tag="#FF0000"/>
+                                <ComboBoxItem Content="Зелёный" Tag="#008000"/>
+                                <ComboBoxItem Content="Синий" Tag="#0000FF"/>
+                                <ComboBoxItem Content="Жёлтый" Tag="#FFD700"/>
+                                <ComboBoxItem Content="Фиолетовый" Tag="#800080"/>
+                                <ComboBoxItem Content="Оранжевый" Tag="#FFA500"/>
+                                <ComboBoxItem Content="Розовый" Tag="#FF69B4"/>
+                                <ComboBoxItem Content="Белый" Tag="#FFFFFF"/>
+                                <ComboBoxItem Content="Серый" Tag="#808080"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="O:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="ColorOCombo" Width="80" SelectionChanged="ColorO_Changed">
+                                <ComboBoxItem Content="Чёрный" Tag="#000000" IsSelected="True"/>
+                                <ComboBoxItem Content="Красный" Tag="#FF0000"/>
+                                <ComboBoxItem Content="Зелёный" Tag="#008000"/>
+                                <ComboBoxItem Content="Синий" Tag="#0000FF"/>
+                                <ComboBoxItem Content="Жёлтый" Tag="#FFD700"/>
+                                <ComboBoxItem Content="Фиолетовый" Tag="#800080"/>
+                                <ComboBoxItem Content="Оранжевый" Tag="#FFA500"/>
+                                <ComboBoxItem Content="Розовый" Tag="#FF69B4"/>
+                                <ComboBoxItem Content="Белый" Tag="#FFFFFF"/>
+                                <ComboBoxItem Content="Серый" Tag="#808080"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Символы:" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                            <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox x:Name="SymbolXBox" Text="X" Width="40" TextChanged="SymbolX_Changed" HorizontalContentAlignment="Center" FontSize="14"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="O:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox x:Name="SymbolOBox" Text="O" Width="40" TextChanged="SymbolO_Changed" HorizontalContentAlignment="Center" FontSize="14"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock x:Name="StatusTB" Grid.Row="0" Text="Ваш ход" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <UniformGrid Grid.Row="1" Rows="3" Columns="3">
+            <UniformGrid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="Gray" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="LightGray"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="FontSize" Value="32"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </UniformGrid.Resources>
+            
             <Button x:Name="btn00" Click="Btn_Click" Tag="0,0"></Button>
             <Button x:Name="btn01" Click="Btn_Click" Tag="0,1"></Button>
             <Button x:Name="btn02" Click="Btn_Click" Tag="0,2"></Button>
