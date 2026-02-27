@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crestiki_noloki"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Крестики-нолики" Height="600" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
         
+        <StackPanel Grid.Row="0" Margin="5">
+            <TextBlock x:Name="StatusTB" Text="Ваш ход" FontSize="18" HorizontalAlignment="Center"></TextBlock>
+        </StackPanel>
+
+        <UniformGrid Grid.Row="1" Rows="3" Columns="3">
+            <Button x:Name="btn00" Click="Btn_Click" Tag="0,0"></Button>
+            <Button x:Name="btn01" Click="Btn_Click" Tag="0,1"></Button>
+            <Button x:Name="btn02" Click="Btn_Click" Tag="0,2"></Button>
+            <Button x:Name="btn10" Click="Btn_Click" Tag="1,0"></Button>
+            <Button x:Name="btn11" Click="Btn_Click" Tag="1,1"></Button>
+            <Button x:Name="btn12" Click="Btn_Click" Tag="1,2"></Button>
+            <Button x:Name="btn20" Click="Btn_Click" Tag="2,0"></Button>
+            <Button x:Name="btn21" Click="Btn_Click" Tag="2,1"></Button>
+            <Button x:Name="btn22" Click="Btn_Click" Tag="2,2"></Button>
+        </UniformGrid>
+        <Button Grid.Row="2" Content="Новая игра" Click="NewGame_Click" Width="150" Height="50"></Button>
     </Grid>
 </Window>
